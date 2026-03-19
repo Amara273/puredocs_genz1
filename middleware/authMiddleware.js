@@ -1,0 +1,41 @@
+// middleware/authMiddleware.js
+const jwt = require('jsonwebtoken');
+
+/**
+ * Verifies the JWT from Authorization header.
+ * Supports both:
+ *   Authorization: Bearer <token>
+ *   Authorization: <token>   (legacy)
+ */
+function verifyToken(req, res, next) {
+  const header = req.headers['authorization'] || '';
+  const token  = header.startsWith('Bearer ') ? header.slice(7) : header;
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'គ្មាន Token (No token provided)' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId   = decoded.id;
+    req.userRole = decoded.role;
+    next();
+  } catch (err) {
+    const msg = err.name === 'TokenExpiredError'
+      ? 'Token ផុតកំណត់ (Token expired)'
+      : 'Token មិនត្រឹមត្រូវ (Invalid token)';
+    return res.status(401).json({ success: false, message: msg });
+  }
+}
+
+/**
+ * Optional: require admin role
+ */
+function requireAdmin(req, res, next) {
+  if (req.userRole !== 'admin') {
+    return res.status(403).json({ success: false, message: 'តម្រូវការ Admin (Admin required)' });
+  }
+  next();
+}
+
+module.exports = { verifyToken, requireAdmin };
