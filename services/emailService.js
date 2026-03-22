@@ -1,4 +1,3 @@
-// services/emailService.js
 const nodemailer = require('nodemailer');
 
 // ── Create transporter ────────────────────────────────
@@ -6,11 +5,11 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,  // 16-char App Password, NOT your real Gmail password
+    pass: process.env.GMAIL_APP_PASSWORD,  
   },
 });
 
-const APP_NAME = process.env.APP_NAME || 'TeamDocs KH';
+const APP_NAME = process.env.APP_NAME || 'PureDocs GENZ1';
 const APP_URL  = process.env.APP_URL  || 'http://localhost:5000';
 
 // ── Shared email template wrapper ────────────────────
@@ -43,8 +42,8 @@ function wrapTemplate(title, bodyHtml) {
   <body>
     <div class="wrap">
       <div class="header">
-        <h1>📁 ${APP_NAME}</h1>
-        <p>ប្រព័ន្ធចែករំលែកឯកសារសម្រាប់ក្រុម</p>
+        <h1>${APP_NAME}</h1>
+        <p>Collaborative Document Management</p>
       </div>
       <div class="body">
         <h2 style="color:#e8eeff;font-size:18px;margin:0 0 16px">${title}</h2>
@@ -62,7 +61,7 @@ function wrapTemplate(title, bodyHtml) {
 // ── Send helper ───────────────────────────────────────
 async function sendMail(to, subject, html) {
   if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-    console.warn('⚠️  Gmail not configured — skipping email to:', to);
+    console.warn('Gmail not configured — skipping email to:', to);
     console.warn('   Subject:', subject);
     return false;
   }
