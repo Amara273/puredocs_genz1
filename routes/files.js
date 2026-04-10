@@ -156,7 +156,7 @@ router.get('/:id/download', async (req, res) => {
 });
 
 // ── GET /api/files/:id/view ───────────────────────────
-router.get('/:id/view', async (req, res) => {
+router.get('/:id/view', verifyTokenOptional, async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM files WHERE id=?', [req.params.id]);
     if (!rows.length) return res.status(404).json({ success: false, message: 'File not found' });

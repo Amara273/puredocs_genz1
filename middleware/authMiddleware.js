@@ -29,4 +29,15 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-module.exports = { verifyToken, requireAdmin };
+function verifyTokenOptional(req, res, next) {
+  try {
+    const auth = req.headers.authorization;
+    if (!auth) return next(); // allow view without login
+
+    verifyToken(req, res, next);
+  } catch (e) {
+    next();
+  }
+}
+
+module.exports = { verifyToken, requireAdmin, verifyTokenOptional };
