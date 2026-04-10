@@ -1362,8 +1362,7 @@ async function shareToTelegramLink() {
   if (!ids.length) return;
   try {
     const link = await getShareLink(ids[0]);
-    // 'https://t.me/share/url?url=' + 
-    const tgUrl = encodeURIComponent(link) +
+    const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(link) +
       '&text=' + encodeURIComponent('ឯកសារពី PureDocs GENZ1');
     window.open(tgUrl, '_blank');
     toast('Telegram បើករួចហើយ — ជ្រើស contact ហើយ Send!', 'success');
