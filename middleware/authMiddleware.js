@@ -1,5 +1,21 @@
 const jwt = require('jsonwebtoken');
 
+function verifyTokenOptional(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      req.userId = null;
+      return next();
+    }
+
+    verifyToken(req, res, next);
+  } catch (err) {
+    req.userId = null;
+    next();
+  }
+}
+
 function verifyToken(req, res, next) {
   const header = req.headers['authorization'] || '';
   const token  = header.startsWith('Bearer ') ? header.slice(7) : header;
@@ -29,15 +45,15 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-function verifyTokenOptional(req, res, next) {
-  try {
-    const auth = req.headers.authorization;
-    if (!auth) return next(); // allow view without login
+// function verifyTokenOptional(req, res, next) {
+//   try {
+//     const auth = req.headers.authorization;
+//     if (!auth) return next(); // allow view without login
 
-    verifyToken(req, res, next);
-  } catch (e) {
-    next();
-  }
-}
+//     verifyToken(req, res, next);
+//   } catch (e) {
+//     next();
+//   }
+// }
 
 module.exports = { verifyToken, requireAdmin, verifyTokenOptional };

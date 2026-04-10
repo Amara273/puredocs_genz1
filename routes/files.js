@@ -8,6 +8,17 @@ const db       = require('../config/db');
 const { verifyToken } = require('../middleware/authMiddleware');
 const storage  = require('../services/storageService');
 
+function verifyTokenOptional(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    req.userId = null;
+    return next();
+  }
+
+  return verifyToken(req, res, next);
+}
+
 const router = express.Router();
 router.use((req, res, next) => {
   // skip auth for public file access
@@ -161,8 +172,14 @@ router.get('/:id/view', verifyTokenOptional, async (req, res) => {
     const [rows] = await db.query('SELECT * FROM files WHERE id=?', [req.params.id]);
     if (!rows.length) return res.status(404).json({ success: false, message: 'File not found' });
     const file = rows[0];
-    if (!(await isMember(req.userId, file.team_id)))
-      return res.status(403).json({ success: false, message: 'Permission denied' });
+    // if (!(await isMember(req.userId, file.team_id)))
+    //   return res.status(403).json({ success: false, message: 'Permission denied' });
+
+    if (req.userId) {
+      if (!(await isMember(req.userId, file.team_id))) {
+        return res.status(403).json({ success: false, message: 'Permission denied' });
+      }
+    } 
 
     if (storage.mode === 'cloudinary') {
       // Proxy inline so viewer can fetch with auth header
