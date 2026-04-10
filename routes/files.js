@@ -9,7 +9,11 @@ const { verifyToken } = require('../middleware/authMiddleware');
 const storage  = require('../services/storageService');
 
 const router = express.Router();
-router.use(verifyToken);
+router.use((req, res, next) => {
+  // skip auth for public file access
+  if (req.path.startsWith('/public')) return next();
+  verifyToken(req, res, next);
+});
 
 // ── Activity log helper ───────────────────────────────
 async function log(teamId, userId, action, targetId, targetName, meta = null) {

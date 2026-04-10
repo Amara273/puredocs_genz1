@@ -1365,7 +1365,7 @@ async function shareToTelegramLink() {
     const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(link) +
       '&text=' + encodeURIComponent('ឯកសារពី PureDocs GENZ1');
     window.open(tgUrl, '_blank');
-    toast('✅ Telegram បើករួចហើយ — ជ្រើស contact ហើយ Send!', 'success');
+    toast('Telegram បើករួចហើយ — ជ្រើស contact ហើយ Send!', 'success');
     closeModal('shareModal');
     // Mark as shared
     await Promise.all(ids.map(id => api('POST', '/files/' + id + '/share', { platform: 'telegram' })));
