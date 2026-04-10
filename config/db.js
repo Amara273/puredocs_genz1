@@ -17,11 +17,11 @@ const pool = mysql.createPool({
 // Test connection on startup
 pool.getConnection()
   .then(conn => {
-    console.log('✅ MySQL connected:', process.env.DB_NAME);
+    console.log('MySQL connected:', process.env.DB_NAME);
     conn.release();
   })
   .catch(err => {
-    console.error('❌ MySQL connection failed:', err.message);
+    console.error('MySQL connection failed:', err.message);
     console.error('   Check your .env DB_* settings and ensure MySQL is running.');
   });
 

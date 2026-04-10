@@ -1,12 +1,5 @@
-// middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
-/**
- * Verifies the JWT from Authorization header.
- * Supports both:
- *   Authorization: Bearer <token>
- *   Authorization: <token>   (legacy)
- */
 function verifyToken(req, res, next) {
   const header = req.headers['authorization'] || '';
   const token  = header.startsWith('Bearer ') ? header.slice(7) : header;
@@ -28,9 +21,7 @@ function verifyToken(req, res, next) {
   }
 }
 
-/**
- * Optional: require admin role
- */
+
 function requireAdmin(req, res, next) {
   if (req.userRole !== 'admin') {
     return res.status(403).json({ success: false, message: 'តម្រូវការ Admin (Admin required)' });

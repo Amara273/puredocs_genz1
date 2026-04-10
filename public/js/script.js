@@ -1,8 +1,9 @@
 // ════════════════════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════════════════════
-const API_BASE = window.location.hostname === 'localhost'
-  ? 'http://localhost:5000/api' : '/api';
+const API_BASE = window.location.hostname === 'puredocs-genz1'
+  ? 'http://localhost:5000/api' 
+  : 'https://puredocs-genz1.onrender.com/api';
 
 // ── API helper ──────────────────────────────────────────
 async function api(method, path, body = null, isForm = false) {
