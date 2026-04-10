@@ -1345,7 +1345,7 @@ function showDownloadedHint(ids) {
             '1. ចុច 📎 (Attach) ខាងក្រោម chat<br>' +
             '2. ជ្រើស <strong>File</strong><br>' +
             '3. ជ្រើស file ពី Downloads<br>' +
-            '4. ចុច Send ✅' +
+            '4. ចុច Send' +
           '</div>' +
         '</div>' +
         '<button onclick="this.parentElement.parentElement.parentElement.remove()" ' +
@@ -1362,7 +1362,8 @@ async function shareToTelegramLink() {
   if (!ids.length) return;
   try {
     const link = await getShareLink(ids[0]);
-    const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(link) +
+    // 'https://t.me/share/url?url=' + 
+    const tgUrl = encodeURIComponent(link) +
       '&text=' + encodeURIComponent('ឯកសារពី PureDocs GENZ1');
     window.open(tgUrl, '_blank');
     toast('Telegram បើករួចហើយ — ជ្រើស contact ហើយ Send!', 'success');
@@ -1400,7 +1401,7 @@ async function shareTo(platform) {
         ' (ចុចតំណ ឬ ទាញ file ដោយផ្ទាល់) PureDocs GENZ1'
       );
       window.open('mailto:?subject=' + sub + '&body=' + body, '_self');
-      toast('📧 Email app បើករួចហើយ!', 'success');
+      toast('Email app បើករួចហើយ!', 'success');
     }
  
     // Mark as shared
